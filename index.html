@@ -1,0 +1,1594 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+
+<script src="/shared/jquery.min.js"></script>
+
+    <script>
+    function set_validator_errors(){
+        orderValidator.errorTitle = 'يرجى تصحيح الأخطاء التالية'; 
+
+        orderValidator.errorNameField = 'الاسم'; 
+        orderValidator.errorNameMess = 'أدخل أسمك'; 
+        
+        orderValidator.errorPhoneField = 'رقم التليفون'; 
+        orderValidator.errorPhoneMess = 'أدخل رقم الهاتف الصحيح'; 
+        
+        orderValidator.errorAddress = 'أدخل العنوان الصحيح'; 
+        orderValidator.errorRequired = 'يتطلب حقلا'; 
+        orderValidator.errorMaxLength = 'حرف {1} بحد أقصى صالح'; 
+        orderValidator.errorMinLength = 'الحد الأدنى لعدد حروف {1}'; 
+        orderValidator.errorEmailField = 'البريد الإلكتروني';
+        orderValidator.errorEmail = 'تم تحديد بريد إلكتروني غير صالح';
+        }
+    </script>
+    
+<script>
+
+
+window.app = {
+    timestamp: parseInt((new Date()).getTime() / 1000),
+    jq: jQuery,
+    formAction: window.location.href,
+    leadToken: '63bd3eddd10a10.57070665',
+    offers: {"33522":{"id":33522,"country":{"code":"DZ","name":"\u0410\u043b\u0436\u0438\u0440"},"price":"5999","price2":"11998","currency":{"code":"DZD","name":"DA"},"discount":"","delivery_price":"","link":"","product_sku":"","prepaid_info_html":""}},
+    currentOffer: {"id":33522,"country":{"code":"DZ","name":"\u0410\u043b\u0436\u0438\u0440"},"price":"5999","price2":"11998","currency":{"code":"DZD","name":"DA"},"discount":"","delivery_price":"","link":"","product_sku":"","prepaid_info_html":""},
+    allowedCountries: ["DZ"],
+    _setOfferId: false,
+    streamHid: '',
+    showcaseUrl: '',
+    disablePhoneMask: Boolean(),
+    
+    setOffer: function (offerId) {
+        if (offerId == this._setOfferId) {
+            return ;
+        }
+        this._setOfferId = offerId;
+        if (offerId) {
+            var offer = app.offers[offerId];
+            var previousOffer = app.currentOffer;
+            app.currentOffer = offer;
+            var event = this.jq.Event("offerchange");
+            event.previousOffer = previousOffer;
+            event.currentOffer = app.currentOffer;
+            this.jq(document).trigger(event);
+            this.updatePage(offer);
+        } else {
+            $('input[name=country]').val('');
+        }
+    },
+    
+    updatePage: function(offer) {
+        $('x-newprice').html(offer.price);
+        $('x-oldprice').html(offer.price2);
+        $('x-currency').html(offer.currency.name);
+        $('input[name=offer], select[name=offer]').val(offer.id);
+        $('input[name=country]').val(offer.country.code);
+    },
+
+    blockForm: function() {
+        // Блокируем кнопки при отправке формы
+        $('input[type=submit]', $(this)).prop( 'disabled', true ).attr( 'disabled', true );
+        $('button', $(this)).prop( 'disabled', true ).attr( 'disabled', true );
+        app.incompleteOrder.lock = true;
+        clearTimeout(app.incompleteOrder.timer);
+    },
+
+    unblockForm: function() {
+        $('input[type=submit]', $(this)).prop( 'disabled', false ).attr( 'disabled', false );
+        $('button[type=submit]', $(this)).prop( 'disabled', false ).attr( 'disabled', false );
+        app.incompleteOrder.lock = false;
+        clearTimeout(app.incompleteOrder.timer);
+    }
+
+};
+
+
+</script><script src="/shared/form.validate.js?12"></script>
+<script src="/shared/interPhoneCodes.js"></script>
+<script src="/shared/showcase.js?v=1"></script>
+<script src="/shared/form.incomplete.js?10"></script>
+<script src="/shared/main2.js?17"></script>
+
+
+
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+
+<link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAxlBMVEUAAAArnysroCsroCssoCwroCssoCwsoCwsnywroCsrnysroCsrnyssoCwroCssoCwsnywsoCwsnywroCssoCwsnywsnywsoCwrnyssnywroCssoCxuvW674Lvf8N82pDbB48H////J58mLyov+/v7H5cc0ozQtoC3N6M294b3p9enE5MQzozOs2azM6MwuoS5Nr03s9uzC48IyojIuoC6v26/8/fx0wHRKrUoxojGy3LL7/ftvvm8voS+13bX6/Ppuvm6437jzkwAxAAAAG3RSTlMABEyQsrJMRtpEaPz8aEb8/EQE2gRMspBMRAQCf9YPAAAArklEQVQYGQXBwU7CUBRF0X3evelrm2CrFQfO/P+/0oEDCg2iARR6XEsAkqQ1/gwIqJoA2OsMgl6jJGwfdUI8aJQAsI9a4in6EACI+BpLtBIAqKSmQzkgAMjMFCoTou2gr2quouTywkaqkroZcFlx2+5qvTUzmKls8S7fPnL4BMwS7S3L9+MU74Dvlx/R1UGKO2DP61mw8SAJ20edCPidrmnbXPo9APC6jcxongH+Afk4PNpkBUXoAAAAAElFTkSuQmCC">
+
+
+    <title>  الإبتكار في الطب </title>
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="all">
+    <style type="text/css">
+        .reviews img{
+            margin-right: -10px}
+        
+    </style>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        function customDate(days) {
+            d = new Date();
+            p = new Date(d.getTime() + days * 86400000);
+
+            let day = (p.getDate() > 9) ? (p.getDate()) : ("0" + p.getDate())
+            let month = (p.getMonth() > 8) ? (p.getMonth() + 1) : ("0" + (p.getMonth() + 1))
+
+            return (p.getFullYear() + "-" + month + "-" + day);
+        }
+    </script>
+
+    <style type="text/css">
+        .e-content>p,
+        .e-content>h1 {
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+        }
+    </style>
+    <div class="c-si-pages">
+        <div class="c-si-active c-si-page">
+            <main id="main-content" class="container o-wrap c-si-main t-lady js-si-main" data-type="slide" data-nav="u-lady">
+                <div class="js-si-sticky">
+                    <div class="h-entry c-post js-si-post">
+                        <div class="o-row-sm js-affix-container">
+                            <div class="c-main">
+                                <header class="o-jumbotron c-entry c-entry-lg c-entry-inverse u-pa-0">
+                                    <div class="c-port js-port-back">
+                                        <div class="c-port-back">
+                                            <div class="u-pos-r">
+                                                <div class="c-post-img-wrap has-pseudo-bg">
+                                                   <!--  <img src="images/banner1.jpg" class="c-post-img u-blur img img-responsive" style="max-width: 100% !important; "> -->
+                                                </div>
+                                                <div class="c-post-meta">
+                                                    <div style="background-color: #000000;">
+                                                        <!-- <h1 class="p-name c-post-title u-uppercase js-si-title custom-add-mar">
+                                                            "NOTICIAS DE LA SEMANA:
+                                                            <br>"¿POR QUÉ LAS PERSONAS DESPUÉS DE LOS 40 PIERDEN LA VISTA TAN RÁPIDO? ¿QUÉ AYUDARÁ A LOS MEXICANOS A PREVENIR LA CEGUERA?»
+                                                        </h1> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div class="u-pos-r">
+                                    <style type="text/css">
+                                        .custom-add-mar {
+                                            margin-left: 10px !important;
+                                            margin-left: 10px !important;
+                                        }
+                                    </style>
+                                    <article class="o-cmr u-content-read" style="margin-top: -35px;">
+
+                                        <h1 class="custom-add-mar">
+                                            <font color="darkred">
+                                                فاز الطبيب الموهوب من الجامعة الوطنية بأرقى جائزة للابتكار في الطب في الجزائر من خلال اكتشاف طريقة لإستعادة الرؤية في أي عمر. بالطبع ، لم يكن هذا الخبر السار حتى في السطر الاول من جدول الأعمال في بلدنا
+                                            </font>
+                                        </h1>
+                                        <font color="darkred"> </font>
+                                        <p></p>
+                                        <hr style="border: 1px solid rgb(204, 0, 0);">
+                                        <div class="e-content">
+                                            <div class="c-cmr-img text-center custom-add-mar">
+                                                <figure class="js-lightgallery ">
+                                                    <img src="images/123.jpg" class="img img-responsive" style="width: 650px;">
+
+
+                                                     <!-- <img src="images/student33.jpg" class="img img-responsive" style="width: 650px;"> -->
+                                                    <figcaption>
+                                                        <span class="text-center">
+															<b>تاريخ النشر:  <script type="text/javascript">document.write(customDate(-7))</script></b>
+														</span>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                            <hr style="border: 1px solid rgb(204, 0, 0);">
+
+                                            <p><b><script type="text/javascript">document.write(customDate(-7))</script>, 
+
+على غير المتوقع جاء الدكتور بوزيان  محمد لمؤتمر طب العيون هذا العام ليصدم جميع الحاضرين بخبر لا يصدق. الأمر الذي جعل الجميع يصمت لمدة عشر دقائق كاملة . كان خليطاً من الدهشة و الفرحة حينما أعلن عن إمكانية استعادة الرؤية في أي عمر.
+
+                                            </b></p>
+
+                                            <p>
+
+بفضل العون من طرف متخصصين من مركز أبحاث طب العيون و مؤسسات البحوث الطبية الأخرى الذين ساهموا في تطوير التركيبة التي جاء بها الدكتور بوزيان  محمد. قام المنتج بإظهار نتائج ملحوظة و رائعة جدا.
+
+
+                                            </p>
+                                            <h1>
+                                                <font color="red">
+
+كيف يمكن لهذه التركيبة الجديدة أن تساعد ملايين المرضى على استعادة بصرهم بالكامل, وكذلك كيف وأين يمكن للناس شرائه  بنصف السعر ؟ في المقالة التالية سوف تجد الإجابات على هذه الأسئلة وغيرها الكثير.
+
+                                                </font>
+                                            </h1>
+                                            <p><b>
+                                                المراسل: الدكتور بوزيان  محمد ، من المعروف أنك واحد من أكثر العلماء ذكاء في العالم. و لكن هل يمكنك إطلاعنا على دافع إنشاء هذه التركيبة؟
+</b>
+                                            </p>
+                                            <p>
+
+الحدث الذي شكل دافعي الرئيسي لانشاء هذه التركيبة هو بصراحة حدث  شخصي : قبل بضع سنوات ، بدأت والدتي تفقد بصرها تدريجيا: لم تساعد النظارات ولا العدسات. استمر نظرها في التدهور. تم تحديد موعد الجراحة, ولكن قبل أسبوع من الجراحة قيل لها إنها مصابة بالعمى التدريجي بسبب نقص الدم في عدسة عينها وظهر عينيها. هذا يعني أنه لا يمكن إجراء العملية
+ </p>
+                                            <p>
+
+بعد ذلك فقدت جدتي بصرها تماما لنفس السبب. الأمر الذي دفعني الى التحقيق في مشاكل أمراض العيون . لقد صدمت عندما أدركت أن معظم الأدوية في الصيدليات و التي كانت تستخدمها والدتي كل يوم هي مركبات كيميائية عديمة الفائدة تزيد الأمور سوءاً فقط. 
+
+</p>
+                                            <p>
+
+في السنوات الثلاث الماضية ، لقد قمت بقصار جهدي للبحث و التجريب في هذا الموضوع بشكل كامل. في الواقع ، المنتج الذي يتحدث عنه الجميع الآن جاء في عملية كتابة أطروحتي الجديدة حول القضاء علي أمراض العيون. صحيح أنني أدركت اكتشاف شيئ جديدا. لكنني في واقع الأمر لم أكن أعتقد أنه سيثير الكثير من الاهتمام في مختلف المؤسسات.
+</p>
+
+
+                                            <p><b>
+
+مراسل: هل واجهت عقبات من أي نوع بعد اكتشاف هذ التركيبة ؟
+ </b></p>
+                                            <p>
+بمجرد ظهور تقارير حول التركيبة الخاصة بي ، بدأت على الفور في تلقي عروض لبيع التركيبة. عرض الألمان 120.000 يورو ، كما أرسلت شركات المكملات الغذائية الأمريكية عروضا بكميات كبيرة. الآن لقد غيرت رقم هاتفي ولا أستخدم الشبكات الاجتماعية لأنها تزعجني بعروض الشراء ، فهم يكتبون لي  كل يوم عبر جميع قنوات الاتصال.
+</p>
+                                            <p><b>
+
+مراسل: ولكن على حسب معلوماتي, أنت لم تبيع التركيبة؟
+</b></p>
+                                            <p>
+
+
+
+
+بالطبع لا. نظرا لأنني لم أرد من التركيبة أن تصبح مشروع ربحي بحت و هذا هو الشيء الذي تبحث عنه شركات الأدوية. 
+لنفترض أنني بعت التركيبة وحصلت على براءات الاختراع ؟ ماذا يحدث بعد ذلك على غرار حظر الإنتاج و زيادة الأسعار؟
+المتضرر الوحيد سيبقى دائما هو المريض البسيط.
+في أحد المحادثات. أخبرني طبيب أجنبي أن مثل هذا المنتج يجب أن يكلف 3000 دولار على الأقل. ولكن من يستطيع شرائه مقابل هذا المال؟
+لذلك، عندما تلقيت عرضا من مركز أبحاث لتطوير المكملات الغذائية للسوق المحلية، قبلته على الفور.
+لقد قمت بالتعاون أيضا مع مركز طب العيون، لقد كانت تجربة لا تصدق حقا. أما حاليا ، فمرحلة التجارب السريرية كاملة و التركيبة الأن  متاحة للجميع.
+
+</p>
+                                            <p>
+هدفي هو أن الأشخاص الذين لديهم ميزانية صغيرة يمكنهم أيضا الحصول على هذه التركيبة بسهولة واستعادة رؤيتهم بسلاسة دون الاعتماد على تركيبات كيميائية أخرى أو جراحات عيون باهظة الثمن أو نظارات أو عدسات
+</p>
+                                            <p>
+
+لذلك ، بمجرد أن حصلت على عرض للمساعدة في تطوير التركيبة ، قبلت على الفور. نحن نعمل مع أفضل المتخصصين في معهد أبحاث طب العيون. و الآن لقد تم اكتمال البحث والمنتج الخاص بي و هو على استعداد تام للإستخدام
+
+</p>
+                                            <p></p>
+
+                                            <div class="c-cmr-img text-center custom-add-mar">
+                                                <figure class="js-lightgallery ">
+                                                    <img src="images/front.jpg" class="img img-responsive" style="width: 650px;">
+
+<!--                                                      <img src="images/labs.png" class="img img-responsive" style="width: 650px;"> -->
+                                                    <figcaption>
+                                                        <span class="text-center">
+															<b>
+الدكتور بوزيان  محمد يقضي وقته اليومي في معهد البحوث الطبية في الجزائر
+</b>
+														</span>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                            <p></p>
+
+                                            <p><b>
+													<font color="darkred">
+التقينا أيضا مع أحد الأخصائيين الطبيين الرئيسيين ، ومنسق المشروع لتنفيذ برنامج الدولة لهذا المنتج الجديد ، جوزيف أندرسون
+</font>
+												</b>
+                                                <br>
+                                            </p>
+                                            <!-- <center><img class="img img-responsive custom-add-mar" src="images/stud2233.jpg" style="width: 90%;"></center> -->
+                                            <br>
+                                            <p><b>
+جوزيف أندرسون, ما هو جوهر تركيبة الدكتور بوزيان  محمد؟ هل تساعد على استعادة الرؤية في أي عمر؟
+
+												</b>
+                                            </p>
+                                            <p>
+
+لقد أعطى الدكتور بوزيان  محمد فكرة نهج جديد لإستعادة النظر ، حتى في الأمراض الوراثية. اليوم ، يدرك المتخصصون جيدا أن جميع الأدوية يمكن أن تساعد فقط في المراحل المبكرة. بالإضافة إلى ذلك ، غالبا ما يأخذ المريض العديد من المنتجات في البداية التي تؤجل فقط ما لا مفر منه. وبمجرد أن يفقد الشخص بصره ، يتم إرساله على الفور إلى الجراحة.
+
+
+                                            </p>
+
+                                            <p>
+                                                
+بالنسبة لهم ، إنها وظيفة تسمح لهم بكسب المال بإستمرار... لا أحد منهم يحاول القضاء علي المشكلة للأبد
+
+
+
+                                            </p>
+
+                                            <p>
+
+في أوائل عام 2000 ، لاحظ العلماء أن 90 ٪ من مشاكل الرؤية تحدث لسبب واحد فقط وهو عدم كفاية تدفق الدم إلى مقلة العين التي تغذي العدسات والصلبة والقرنية بالمواد الأساسية.
+لهذا إن كان من الممكن القضاء على هذا السبب الكامن، سوف يتم التخلص أيضا من أغلبية جراحات العين المكلفة.
+
+
+
+
+                                            </p>
+                                            <p>
+
+تساعد فكرة الدكتور بوزيان  محمد على تنظيم تدفق الدم إلى العينين. الشيء الذي يضمن الاختفاء الكامل لخطر العمى في المرحلة الأولى من المرض. لكن لازال من الصعب مساعدة المراحل الصعبة عندما يتعلق الأمر بالعمى التام. لذلك ، كانت جهود عدد كبير من الأطباء والمهنيين الطبيين ضرورية لتطوير طريقة فعالة لإستعادة بصر كل مريض
+
+                                            </p>
+                                            <p>
+المنتج  يسمى: Oculus vision يوفر تدفق الدم اللازم لمقلة العين ويعزز الانتعاش الفعال للعيون في أي عمر. لدينا فريق من العلماء والموظفين من المعهد الطبي لإختبار  Oculus vision على مجموعة من 50 شخصا مع مجموعة متنوعة من أمراض العيون
+</p>
+
+                                            <p>
+                                                <center>
+                                                    <h2>
+هذه هي النتائج التي حققها بعض مرضانا
+</h2>
+                                                </center>
+                                            </p>
+                                            <div class="c-cmr-img text-center custom-add-mar">
+                                                <figure class="js-lightgallery ">
+                                                    <img src="images/ph1.jpg" class="img img-responsive" style="width: 650px;">
+                                                    <figcaption>
+                                                        <span class="text-center">
+															<b>
+مريض ذكر: 45 سنة. تحسن إعتام عدسة العين في  مدة 10 أيام فقط. و نري امامنا  نتائج ملحوظة ، وقد تعافت الرؤية تقريبا
+</b>
+														</span>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                            <br>
+                                            <div class="c-cmr-img text-center custom-add-mar">
+                                                <figure class="js-lightgallery ">
+                                                    <img src="images/ph3.jpg" class="img img-responsive" style="width: 650px;">
+                                                    <figcaption>
+                                                        <span class="text-center">
+															<b>
+مريضة انثي : 38 سنة. تحسن في  إلتهاب مقلة العين في مدة 12 يوماً فقط
+</b>
+														</span>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+                                            <br>
+                                            <div class="c-cmr-img text-center custom-add-mar">
+                                                <figure class="js-lightgallery ">
+                                                    <img src="images/ph2.jpg" class="img img-responsive" style="width: 650px;">
+                                                    <figcaption>
+                                                        <span class="text-center">
+															<b>
+مريض ذكر: 40 سنة. إختفي إعتام عدسة العين  في مدة 15 يوماً فقط . تحسن ملحوظ بمقلة العين ، وتحسين الرؤية بنسبة 85 ٪ ، لم ينته مسار التركيبة بعد ، ولكن هناك بالفعل نتائج ملحوظة
+</b>
+														</span>
+                                                    </figcaption>
+                                                </figure>
+                                            </div>
+
+
+
+
+                                            <p><b>
+مراسل: ولكن يُعتقد أنه من المستحيل أن يعود النظر مرة أخرى دون جراحة, خصوصا بعد سن 40؟
+</b></p>
+                                            <p>
+ليس كذلك. إنه خطأ ارتكبته شركات الأدوية الكبرى التي ترغب في تحقيق المزيد من الأرباح. يمكن استئناف أي نظام من الجسم ، وهو ما يكفي للمساعدة والقضاء على العمليات الالتهابية ، وتحسين الدورة الدموية ، وتسريع إزالة الخلايا الميتة والسموم
+</p>
+                                            <p><b>
+المراسل: وكيف تم حل مشاكل الرؤية من قبل؟ الصيدليات لديها العديد من المنتجات لهذا الغرض
+</b></p>
+                                            <p>
+                                                <a href="#to-order-form" style="color:blue"></a>
+والحقيقة هي أن هناك العديد من هذه المنتجات. لكن هذه المنتجات تخفف الأعراض فقط ، هذا كل ما يمكنهم فعله. لفترة قصيرة ، تتحسن رؤيتك. لكن بشكل عام ، من المرجح أن يكون لها تأثير سلبي على الرؤية أكثر من التأثير الإيجابي. هنا كان الدكتور بوزيان  محمد على حق تماما. إذا نظر إلى الصيغ الطبية في الصيدليات ، فسوف يفهم أي متخصص أنه لا يمكن اتخاذها إلا كملاذ أخير
+
+
+                                            </p>
+                                            <p> <b>
+													
+المراسل: هل اتضح أن  Oculus vision يساعد على استعادة الرؤية بالكامل؟
+
+
+												</b>
+
+                                            </p>
+                                            <p>
+الغرض الرئيسي من التركيبة هو ضمان تدفق الدم إلى العين عن طريق تجديد الأنسجة التالفة. جرعة واحدة كافية لتنشيط أكثر من 930.000 خلية تشارك مباشرة في عملية استعادة الرؤية طوال فترة إستخدام Oculus vision. هذا هو المبدأ الأساسي ل Oculus vision.
+
+
+                                            </p>
+                                            <p>
+                                                
+نحن نقترب من هذا الموضوع بطريقة غير عادية. تركيبتنا ليس مجرد مجموعة أخرى من الصيغ الكيميائية. إنها مزيج فريد من المستخلصات النباتية عالية التركيز. ونتيجة لذلك ، فهي فعالة وآمنة للعيون.
+
+
+                                            </p>
+                                            <p>
+                                               
+بعد 1-2 أيام من بدء إستخدام Oculus vision ، تبدأ رؤيتك في التحسن. تصبح الصور واضحة ، ويختفي الاحمرار والالتهاب في العين. يحدث التجديد الخلوي وتعود رؤيتك. أيضا ، على عكس الأدوية الأخرى ، فإن مكونات  Oculus vision لها تأثير إيجابي على الأوعية الصغيرة في مقلة العين
+
+
+                                            </p>
+<img src="images/prod.png" alt="">
+                                            <p><span style="font-family:Arial,Helvetica,sans-serif"><b>
+المراسل: هل سيتم بيع Oculus vision أيضا في الصيدليات؟ كم سيكون الثمن؟
+</b></span></p>
+                                            <p>
+                                                
+كما تعلمون ، بمجرد أن أصبح من الواضح أن لدينا شيئا قيما حقا ، هاجمنا الصيادلة من جميع الزوايا. عرضت شركات الأدوية أموالا طائلة للحصول علي   تركيبة  Oculus vision. ولعدم البدء في إنتاج التركيبة ومنعها.
+و كما هو معروف أن العديد من المنتجات المعززة للرؤية غير الفعالة تحتل مكانة مهمة في سوق الأدوية العالمية. لكن منتجنا يمكنه أن يحدث فرقا جذريا.
+
+
+                                            </p>
+                                            <p>
+بعد كل شيء ، من خلال أخذ تركيبة  Oculus vision مرة واحدة فقط ، ستتاح للمرضى الفرصة لإستعادة رؤيتهم بشكل دائم ، بغض النظر عن أعمارهم. ستكون العمليات الجراحية باهظة الثمن وجراحات الليزر غير ضرورية ، ولن ينفق أحد المال على الطب القديم كل شهر
+
+
+                                            </p>
+                                            <p>
+                                                
+الصيدليات شركاء لشركات الأدوية. وبطبيعة الحال ، لا يريدون حتى أن يسمعوا عن هذا المنتج. على الرغم من أنه حاليا المنتج الوحيد للقضاء علي  أمراض الرؤية الموصى به رسميا من قبل مركز العلوم الصحية الذي يمنع ظهور مضاعفات مثل العمى.
+
+
+                                            </p>
+                                            <p><b>
+مراسل: فكيف يمكن للناس شرائه إذا لم يتم بيع Oculus vision في الصيدليات؟
+</b></p>
+
+
+                                            <p> 
+قررنا تنظيم بيع Oculus vision مباشرة ، دون الصيدليات أو الوسطاء. كل ما عليك فعله هو كتابة اسمك ورقم هاتفك في نموذج الطلب الرسمي
+
+
+                                            </p>
+
+                                            <p> 
+بعد ذلك ، سيتم الاتصال بالأشخاص من قبل المتخصصين المؤهلين لدينا      . بغض النظر عن المكان الذي تعيش فيه ، يمكننا إرسال المنتج إلى أي جزء من البلاد. الشحن عن طريق البريد السريع مباشرة إلى منزلك.
+
+                                            </p>
+
+                                            <p><b>
+مراسل: كم تكلفة Oculus vision ؟
+    </b></p>
+
+                                            <p><b>
+سعر 1 حزمة من Oculus vision هو 5999 دينار جزائري
+
+لدينا اتفاق ناجح مع اتجاه جمعية أطباء العيون وقسم طب العيون في المعهد الطبي على خصم 50 ٪ بين 05-05-2022 الى 12-05-2022  ضمنا. هذا هو برنامجنا المدعوم الذي يهدف إلى لفت الانتباه إلى هذا المنتج. نأمل أن يتم تمرير هذه التجربة عن طريق الكلام الشفهي وأن جميع هؤلاء المرضى الذين استعادوا رؤيتهم سوف ينقلونها إلى أفراد أسرهم ومعارفهم
+</b></p>
+                                            <p>
+لحسن الحظ ، يفهم الخبراء أهمية جعل المنتج متاحا للجميع ، وليس للأفراد فقط. وعدنا بعدم تصدير منتجاتنا. هو فقط لبلدنا
+
+                                            </p>
+
+
+                                            <hr>
+
+
+                                        </div>
+                                    </article>
+                                </div>
+
+                                <style type="text/css">
+                                    .countdown-block {
+                                        text-align: center;
+                                        background: #ed1b24;
+                                        color: #fff;
+                                        padding-bottom: 10px;
+                                        box-shadow: 0 0 black;
+                                    }
+
+                                    .countdown-block>h3 {
+                                        font-weight: 800;
+                                        font-size: 26px;
+                                        padding-top: 5px;
+                                        margin: 0;
+                                        line-height: 1;
+                                        padding-bottom: 10px;
+                                    }
+
+                                    .countdown-container {
+                                        max-width: 320px;
+                                        background: #ed1b24;
+                                        border: 5px solid #fffd07;
+                                        text-align: center;
+                                        margin: 0 auto;
+                                    }
+
+                                    .countdown-container h3 {
+                                        color: #fffd07;
+                                        margin: 0 auto;
+                                        margin-top: -10px;
+                                        background: #ed1b24;
+                                        width: 90%;
+                                        text-transform: uppercase;
+                                        font-weight: 700;
+                                    }
+
+                                    .countdown {
+                                        display: flex;
+                                        color: white;
+                                        justify-content: center;
+                                        align-items: center;
+                                        font-weight: 300;
+                                        font-size: 39px;
+                                        line-height: 1;
+                                    }
+
+                                    .countdown-item {
+                                        color: #fff;
+                                        width: 80px;
+                                        font-weight: bold;
+                                        text-align: center;
+                                    }
+
+                                    .countdown-divider {
+                                        color: #fff;
+                                        width: 1rem;
+                                    }
+
+                                    .countdown-text {
+                                        margin: 0 auto;
+                                        margin-bottom: -8px;
+                                        background: #ed1b24;
+                                        width: 90%;
+                                        color: #fffd07;
+                                        font-weight: 700;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        text-transform: uppercase;
+                                    }
+
+                                    .countdown-text span {
+                                        /*width: 4rem;
+    margin-right: 2rem;*/
+                                        text-align: center;
+                                        width: 33%;
+                                    }
+
+                                    .best-form {
+                                        font: 16px/1.2 "Roboto", sans-serif;
+                                        padding: 1rem;
+                                        padding-bottom: 40px;
+                                        color: #fff;
+                                        background-color: #fa0;
+                                        background-image: url(svg%2Bxml%3Bbase64%2CPHN2Z);
+                                        background-size: cover;
+                                    }
+
+                                    form {
+                                        max-width: 320px;
+                                        margin: 0 auto;
+                                    }
+
+                                    .product {
+                                        max-width: 320px;
+                                        margin: 0 auto;
+                                        display: flex;
+                                    }
+
+                                    .product .left {
+                                        width: 50%;
+                                    }
+
+                                    .product .right {
+                                        width: 50%;
+                                        text-align: center;
+                                    }
+
+                                    .product .price-old {
+                                        line-height: 1;
+                                    }
+
+                                    .product .price-old span {
+                                        display: inline-block;
+                                        padding: 0 1rem;
+                                        font-size: 35px;
+                                        color: #000;
+                                        position: relative;
+                                    }
+
+                                    .product .price-old span:before {
+                                        position: absolute;
+                                        content: "";
+                                        left: 0;
+                                        top: 45%;
+                                        right: 0;
+                                        border-top: 5px solid #ed1b24;
+                                        transform: rotate(-10deg);
+                                    }
+
+                                    .product .discount-text {
+                                        margin-top: 1rem;
+                                        color: #000;
+                                        font-size: 18px;
+                                    }
+
+                                    .product .price {
+                                        color: #ff0101;
+                                        font-size: 40px;
+                                        font-weight: 700;
+                                        letter-spacing: -2px;
+                                        line-height: 1;
+                                    }
+
+                                    .product .price span {
+                                        font-weight: 300;
+                                        font-size: 50%;
+                                        margin-left: 5px;
+                                    }
+
+                                    input,
+                                    button,
+                                    select,
+                                    textarea {
+                                        font-family: inherit;
+                                        font-size: inherit;
+                                        line-height: inherit;
+                                    }
+
+                                    .country-input,
+                                    .name-input,
+                                    .phone-input {
+                                        color: #000;
+                                        background: #fff;
+                                        border: 0;
+                                        width: 100%;
+                                        border-radius: 6px;
+                                        box-sizing: border-box;
+                                        font-size: 19px;
+                                        margin-bottom: 10px;
+                                        display: flex;
+                                        transition: all .15s ease-in-out;
+                                    }
+
+                                    .name-input label,
+                                    .phone-input label {
+                                        align-self: center;
+                                        padding-left: 15px;
+                                        width: 60px;
+                                        font-weight: 700;
+                                    }
+
+                                    .name-input input,
+                                    .phone-input input {
+                                        flex: 1 1 auto;
+                                        border: 0;
+                                        padding: 7;
+                                        font: inherit;
+                                        color: inherit;
+                                        box-sizing: border-box;
+                                        min-width: 0;
+                                        padding: 10px 15px;
+                                        padding-left: 10;
+                                        border-radius: 6px;
+                                    }
+
+                                    input::placeholder {
+                                        text-decoration: underline dotted;
+                                        font-family: sans-serif;
+                                        color: grey !important;
+                                    }
+
+                                    .button-submit {
+                                        text-align: center;
+                                        display: flex;
+                                        box-sizing: border-box !important;
+                                        width: 100%;
+                                        margin: 0 auto;
+                                        padding: 0 1rem;
+                                        text-decoration: none;
+                                        text-transform: uppercase;
+                                        line-height: 1;
+                                        color: #fff;
+                                        border-radius: 6px;
+                                        border: 0;
+                                        padding: 14px 0;
+                                        background-image: linear-gradient(to top, #137c09, #16ac0c);
+                                        transition: all .15s ease-in-out;
+                                        cursor: pointer;
+                                        font: 19px/1.4 "Roboto", sans-serif;
+                                        font-weight: 400;
+                                    }
+
+                                    .button-submit-text {
+                                        color: #101010;
+                                        flex: 1 1 auto;
+                                        font: inherit;
+                                        font-weight: 900;
+                                    }
+
+                                    .button-submit-arrow {
+                                        width: 0;
+                                        height: 0;
+                                        border-top: .6rem solid transparent;
+                                        border-bottom: .6rem solid transparent;
+                                        border-left: 1rem solid #fff;
+                                        margin-right: 1rem;
+                                    }
+
+                                    #only-mob {
+                                        display: none;
+                                    }
+
+                                    @media screen and (max-width: 759px) {
+                                        .product {
+                                            display: block;
+                                        }
+                                        .product .left,
+                                        .product .right {
+                                            width: 100%;
+                                        }
+                                        #not-on-mob {
+                                            display: none;
+                                        }
+                                        #only-mob {
+                                            display: block;
+                                            text-align: center;
+                                        }
+                                    }
+
+                                    .btnbtn {
+                                        animation: shadow-pulse2 1s infinite;
+                                    }
+
+                                    @keyframes shadow-pulse2 {
+                                        0% {
+                                            box-shadow: 0 0 0 0px rgba(0, 128, 0, 0.9);
+                                            /*box-shadow: 0 0 0 0px rgba(255, 160, 122, 0.9);*/
+                                        }
+                                        100% {
+                                            box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+                                        }
+                                    }
+
+                                    .btnbtn {
+                                        text-decoration: none;
+                                        text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
+                                        color: rgb(4, 4, 4) ! important;
+                                        background-color: #ffda00;
+                                        background-image: none;
+                                        /*background: linear-gradient(rgba(255, 255, 0, 0.9), rgba(255, 0, 0, 0.9));*/
+                                        display: inline-block;
+                                        padding: 3px 14px;
+                                        margin: 9px;
+                                        font-size: 20px;
+                                        font-weight: 400;
+                                        line-height: 1.42857;
+                                        text-align: center;
+                                        white-space: nowrap;
+                                        vertical-align: middle;
+                                        cursor: pointer;
+                                        border: 1px solid transparent;
+                                        border-radius: 30px;
+                                        text-transform: uppercase;
+                                        -webkit-transition: all .3s;
+                                        -o-transition: all .3s;
+                                        transition: all .3s;
+                                        animation: shadow-pulse2 1s infinite;
+                                        font-weight: 700;
+                                        white-space: normal;
+                                    }
+
+                                    .pulse {
+                                        background-color: rgba(0, 113, 227, 1);
+                                        /*blue*/
+                                        animation: shadow-pulse 1s infinite;
+                                    }
+
+                                    @keyframes shadow-pulse {
+                                        0% {
+                                            box-shadow: 0 0 0 0px rgba(0, 113, 227, 0.9);
+                                        }
+                                        100% {
+                                            box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+                                        }
+                                    }
+
+                                    @keyframes shadow-pulse-big {
+                                        0% {
+                                            box-shadow: 0 0 0 0px rgba(0, 113, 227, 0.9);
+                                        }
+                                        100% {
+                                            box-shadow: 0 0 0 70px rgba(0, 0, 0, 0);
+                                        }
+                                    }
+
+                                    .timer-in-button {
+                                        margin: 12px;
+                                        display: block;
+                                        white-space: nowrap;
+                                    }
+
+                                    .timer-in-button span {
+                                        margin: 0 7px;
+                                        background: white;
+                                        color: red;
+                                        padding: 5px;
+                                        border-radius: 3px;
+                                    }
+
+                                    .prod-pulse {
+                                        margin-bottom: 15px;
+                                        border-radius: 20px;
+                                        animation: prod-shadow-pulse 1s infinite;
+                                    }
+
+                                    @keyframes prod-shadow-pulse {
+                                        0% {
+                                            box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.9);
+                                            /*белый*/
+                                            /*box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.9);*/
+                                            /*крассный*/
+                                            /*box-shadow: 0 0 0 0px rgba(227, 133, 0, 0.9);*/
+                                            /*темно-крассный*/
+                                            /*box-shadow: 0 0 0 0px rgba(255, 255, 0, 0.9);*/
+                                            /*желтый*/
+                                            /*box-shadow: 0 0 0 0px rgba(255, 215, 0, 0.9);*/
+                                            /*золотой*/
+                                            /*box-shadow: 0 0 0 0px rgba(255, 160, 122, 0.9);*/
+                                            /*кораловый*/
+                                            /*box-shadow: 0 0 0 0px rgba(255, 140, 0, 0.9);*/
+                                            /*оранжевый*/
+                                            /*box-shadow: 0 0 0 0px rgba(255, 105, 180, 0.9);*/
+                                            /*розовый*/
+                                            /*box-shadow: 0 0 0 0px rgba(238, 130, 238, 0.9);*/
+                                            /*фиолетовый*/
+                                            /*box-shadow: 0 0 0 0px rgba(138, 43, 226, 0.9);*/
+                                            /*темно-фиолетовый*/
+                                            /*box-shadow: 0 0 0 0px rgba(0, 255, 0, 0.9);*/
+                                            /*лайм*/
+                                            /*box-shadow: 0 0 0 0px rgba(50, 205, 50, 0.9);*/
+                                            /*светло-зеленый*/
+                                            /*box-shadow: 0 0 0 0px rgba(0, 128, 0, 0.9);*/
+                                            /*зеленый*/
+                                            /*box-shadow: 0 0 0 0px rgba(0, 255, 255, 0.9);*/
+                                            /*берюзовый*/
+                                            /*box-shadow: 0 0 0 0px rgba(0, 206, 209, 0.9);*/
+                                            /*темно-берюзовый*/
+                                            /*box-shadow: 0 0 0 0px rgba(173, 216, 230, 0.9);*/
+                                            /*голубой*/
+                                            /*box-shadow: 0 0 0 0px rgba(30, 70, 255, 0.9);*/
+                                            /*синий*/
+                                        }
+                                        100% {
+                                            box-shadow: 0 0 0 15px rgba(0, 0, 0, 0);
+                                        }
+                                    }
+
+                                    @keyframes prod-shadow-pulse2 {
+                                        0% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 25%);
+                                        }
+                                        11% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 50%);
+                                        }
+                                        23% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 75%);
+                                        }
+                                        34% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
+                                        }
+                                        45% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 75%, rgba(255, 255, 255, 0.8) 100%);
+                                        }
+                                        55% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 75%, rgba(255, 255, 255, 0.8) 100%);
+                                        }
+                                        66% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.8) 75%, rgba(255, 255, 255, 0) 100%);
+                                        }
+                                        77% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 75%);
+                                        }
+                                        89% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 50%);
+                                        }
+                                        100% {
+                                            background: linear-gradient(rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 25%);
+                                        }
+                                    }
+
+                                    @keyframes prod-shadow-pulse3 {
+                                        0% {
+                                            box-shadow: 5px 0px 2px white;
+                                        }
+                                        15% {
+                                            box-shadow: 5px 5px 2px white;
+                                        }
+                                        30% {
+                                            box-shadow: 0px 5px 2px white;
+                                        }
+                                        45% {
+                                            box-shadow: -5px 5px 2px white;
+                                        }
+                                        55% {
+                                            box-shadow: -5px 0px 2px white;
+                                        }
+                                        70% {
+                                            box-shadow: -5px -5px 2px white;
+                                        }
+                                        85% {
+                                            box-shadow: 0px -5px 2px white;
+                                        }
+                                        100% {
+                                            box-shadow: 5px -5px 2px white;
+                                        }
+                                    }
+                                </style>
+
+
+                                <style type="text/css">
+                                    .img-responsive {
+                                        width: 140%;
+                                        max-width: 140%;
+                                        position: relative;
+                                        left: 0px;
+                                    }
+
+                                    .countdown-container h3 {
+                                        font-size: 1rem;
+                                    }
+
+                                    .countdown-text {
+                                        font-size: .8rem;
+                                    }
+
+                                    .product .price-old span {
+                                        font-size: 35px;
+                                    }
+
+                                    .product .price {
+                                        font-size: 40px;
+                                    }
+
+                                    .best-form {
+                                        background: linear-gradient(#efeeed, #82b1e1)
+                                    }
+
+                                    .countdown-block,
+                                    .countdown-container,
+                                    .countdown-container h3,
+                                    .countdown-text {
+                                        background: #005773;
+                                    }
+
+                                    .button-submit {
+                                        background-image: linear-gradient(to top, #fffd07, #fffd07);
+                                    }
+
+                                    @media screen and (max-width: 759px) {
+                                        .img-responsive {
+                                            margin: 0 auto;
+                                            display: block;
+                                            width: 100%;
+                                            max-width: 100%;
+                                            position: inherit;
+                                        }
+                                    }
+                                </style>
+
+                                <div class="countdown-block" id="to-order-form">
+                                    <h3 class="my-own">
+خصم للأشخاص من الجزائر 50٪
+</h3>
+                                    <div class="countdown-container">
+                                        <h3 class="my-own">
+تنتهي صلاحية العرض في
+</h3>
+                                        <div class="countdown">
+                                            <div class="countdown-item h-timer">00</div>
+                                            <div class="countdown-divider">:</div>
+                                            <div class="countdown-item m-timer">44</div>
+                                            <div class="countdown-divider">:</div>
+                                            <div class="countdown-item s-timer">59</div>
+                                        </div>
+                                        <div class="countdown-text">
+                                            <span>
+ساعة
+</span>
+                                            <span>
+دقيقة
+ 
+</span>
+                                            <span>
+ثانية
+ 
+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="best-form">
+                                    <div class="wrap">
+                                        <div class="product prod-pulse">
+                                            <div class="price-old" id="only-mob"><span><x-oldprice>11998</x-oldprice> <x-currency>DA</x-currency></span></div>
+                                            <div class="left">
+                                                <img src="images/prod.png" class="img-responsive my-own">
+                                            </div>
+                                            <div class="right">
+                                                <div class="price-old" id="not-on-mob"><span><x-oldprice>11998</x-oldprice> <x-currency>DA</x-currency></span></div>
+                                                <div class="discount-text"></div>
+                                                <div class="price"><x-newprice>5999</x-newprice> <x-currency>DA</x-currency></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-wrap">
+                                            <form method="post" action="">
+                                                    <input name="csrf_token" type="hidden" value="41b261b6f6fc3e842c76c8201691458e:1673346782" />
+    <!-- <select name="offer" class="form-control country_chang" style="display: none;">
+        <option
+                data-country-code="DZ"
+                selected="selected"
+                value="33522"
+        >
+            Алжир        </option>
+    </select> -->
+
+        
+                                                <div class="name-input">
+
+                                                    <input id="name-input" type="text" placeholder="الإسم" name="name" required="required" autocomplete="name">
+                                                </div>
+                                                <div class="phone-input">
+
+                                                    <input id="phone-input" type="tel" placeholder="رقم الهاتف" name="phone" required="required"   minlength="13" maxlength="14">
+                                                </div>
+                                                <button type="submit" class="button-submit">
+													<span class="button-submit-text">اطلب Oculus vision</span>
+
+												</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <section class="reviews">
+                                    <div class="wrapper-padding">
+                                        <div class="title reviews__title">
+                                            <h3>
+تعليق
+ 
+</h3>
+                                        </div>
+                                        <div class="reviews__wrap">
+
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/ava5.jpg" style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+ يسرا
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+أنا مستاءة جدا من قصة والدتك .. أنا أيضا لدي مشكلة كبيرة في عيني ، النظارات لم تعد تساعدني ، أنا يائسة ..
+ 
+
+                                                        </p>
+
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(0))
+                                                            </script> | <span>تعليق</span></p>
+                                                    </div>
+                                                    <div class="review__item">
+                                                        <div class="user-photo">
+                                                            <img class="img img-responsive" src="images/student123.jpg" alt style="width:100% !important;">
+
+                                                          <!--   <img class="img img-responsive" src="images/student1.jpg" alt style="width:100% !important;"> -->
+                                                        </div>
+                                                        <div class="user-info">
+                                                            <div class="user-name">
+                                                                <p>
+د. بوزيان  محمد
+ 
+</p>
+                                                            </div>
+                                                            <div class="user-txt">
+                                                                <p>
+مرحبا شكرا! إذا كنت تعاني من مشاكل رؤية العين الكبيرة ، أنصحك بعدم تأخير حل هذه المشاكل والبدء في استخدام  Oculus vision في أقرب وقت ممكن. وإلا فهناك احتمال الإصابة بالعمى التام وأتمنى لكم الشفاء العاجل!
+</p>
+                                                            </div>
+                                                            <div class="user-time">
+                                                                <p>
+                                                                    <script type="text/javascript">
+                                                                        document.write(customDate(0))
+                                                                    </script> | <span>تعليق</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/1.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+نوار مجدوب
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+اشتريت هذه التركيبة بسعر ترويجي. الآن هو اليوم الثالث الذي أستعمل فيه هذه التركيبة المذهلة  و نظري أصبح اوضح! أرتدي النظارات دائمًا منذ الطفولة  والآن فقط يمكنني خلعها !
+ 
+
+
+                                                        </p>
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(0))
+                                                            </script> | <span> تعليق </span></p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/2.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+محمد شفيق
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+لا يصدق! الأسبوع الماضي كنت اعاني من إعتام عدسة العين ، لكنني الآن أفضل بكثير! لم يتعافى بصري بشكل كامل حتى الآن ، لكني لم أنتهي من العلاج بعد!
+ 
+
+
+                                                        </p>
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(0))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/3.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+حسني محمد نور الدين
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+طلبت التركيبة لوالدتي بالخصم! وصل المنتج أمس. إنه أسهل من الذهاب لطبيب العيون. بدأت والدتي في إستخدام التركيبة. شكراً!
+ </p>
+
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-1))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/4.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+ياسمين بيل
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+دكتور بوزيان  محمد أنت فخر الجزائر الحقيقي! حظاً سعيداً في هذا المشروع!
+ 
+
+                                                        </p>
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-2))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/5.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+ هاجر
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+قرأت عن هذا الاكتشاف في مجلة طبية! اكتشاف مذهل
+ 
+
+
+                                                        </p>
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-2))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/6.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+مايا رانيا
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+أرسلني الطبيب إلى الجراحة. كنت أعاني من صعوبة ، لذلك قررت أن أجرب هذه التركيبة بسبب اليأس. لكنني لم أستطع أن أفكر أنه سيساعد عيني! بالفعل في اليوم الثالث من إستخدامه ، كانت الرؤية تتحسن! كنت أعاني من الجلوكوما في ذلك الوقت. بالأمس لقد زرت الطبيب ، تفاجأ طبيبي - عاد نظري إلى طبيعته. سألني الطبيب عن المنتج الذي كنت أستخدمه وأخبرته عن Oculus vision. قال إنه لم يسمع عن هذا المنتج من قبل وإلا لكان قد وصفه لي بدلاً من اقتراح الجراحة! لكني لا أصدقه. لقد طلبت هذا المنتج لأول مرة لأنه كان مخفضًا وأيضًا لأنني كنت خائفة من الإصابة بالعمى بعد الجراحة.
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-2))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/7.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+صبحي وليد
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+اشتريته لأمي وأبي لأنني لم أرغب في تفويت الخصم. أخذ كلاهما Oculus vision ، وقالت أمي وأبي إن رؤيتهما تحسنت بعد إستخدام Oculus vision.الآن توقفت أمي وأبي أيضًا عن ارتداء النظارات في المنزل. هذا المنتج رائع جدًا !
+ 
+
+                                                            <br>
+                                                        </p>
+
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-3))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/8.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+لوجاني وسامي
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+طلبته بنجاح بسعر مخفض, سيصل المنتج غدًا ، شكرًا لك
+ 
+
+                                                        </p>
+
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-4))
+                                                            </script> | <span> تعليق</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="review__item">
+                                                <div class="user-photo">
+                                                    <img class="img img-responsive" src="images/ava111.jpg" alt style="width:100% !important;">
+                                                </div>
+                                                <div class="user-info">
+                                                    <div class="user-name">
+                                                        <p>
+
+شيرادي أمينة
+
+ 
+</p>
+                                                    </div>
+                                                    <div class="user-txt">
+                                                        <p>
+لماذا يُباع هذا المنتج هنا وليس في الصيدلية الرسمية؟
+
+                                                        </p>
+
+                                                    </div>
+                                                    <div class="user-time">
+                                                        <p>
+                                                            <script type="text/javascript">
+                                                                document.write(customDate(-4))
+                                                            </script> | <span>تعليق</span></p>
+                                                    </div>
+                                                    <div class="review__item">
+                                                        <div class="user-photo">
+                                                            <img class="img img-responsive" src="images/student123.jpg" alt style="width:100% !important;">
+
+                                                            <!--  <img class="img img-responsive" src="images/student1.jpg" alt style="width:100% !important;"> -->
+                                                        </div>
+                                                        <div class="user-info">
+                                                            <div class="user-name">
+                                                                <p> 
+
+د. بوزيان  محمد
+</p>
+                                                            </div>
+                                                            <div class="user-txt">
+                                                                <p> 
+مرحبًا ، كما قلت من قبل ، الصيدليات شريكة لشركات الأدوية ولن تسمح ببساطة بعرض تركيبة جديدة للبيع. لأنه من المربح أكثر بكثير بالنسبة لهم بيع المنتجات التي لا تساعد فقط ، بل تؤدي أيضًا إلى تدهور صحة الناس. لمثل هذه الشركات - إنها مجرد عمل! لذلك ، يُباع منتجنا هنا فقط وأنا أضمن شخصيًا جودة منتجاتنا. أريد أن يكون Oculus vision
+ متاح لجميع الناس في الجزائر ، مثل أمي.
+
+                                                                </p>
+                                                            </div>
+                                                            <div class="user-time">
+                                                                <p>
+                                                                    <script type="text/javascript">
+                                                                        document.write(customDate(-4))
+                                                                    </script> | <span>تعليق</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="review__item">
+                                                        <div class="user-photo">
+                                                            <img class="img img-responsive" src="images/ava222.jpg" alt style="width:100% !important;">
+                                                        </div>
+                                                        <div class="user-info">
+                                                            <div class="user-name">
+                                                                <p> 
+
+حمرور فاطمة زهرة
+
+</p>
+                                                            </div>
+                                                            <div class="user-txt">
+                                                                <p> 
+عزيزتي ماريا ، هل قرأت هذا المقال بعناية؟ ها هي الخدع التي تقوم بها الصيدليات! الآن كل شيء للبيع على الإنترنت ، والملابس والأحذية ، و بالطبع  Oculus vision أيضاً ! وبفضل هذا المنتج 
+ ، استعدت رؤيتي إلى 100٪ ، لذا من الأفضل التفكير مسبقًا قبل الإدلاء بتصريحات قاسية! يتم تسليم المنتج في غضون 3-4 أيام إلى المنزل ويتم الدفع بعد استلام الطرد ، 
+هل لا يزال يتعين عليك شرح جميع المزايا ؟
+
+                                                                </p>
+                                                               
+                                                            </div>
+                                                            <div class="user-time">
+                                                                <p>
+                                                                    <script type="text/javascript">
+                                                                        document.write(customDate(-4))
+                                                                    </script> | <span>تعليق</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="review__item">
+                                                        <div class="user-photo">
+                                                            <img class="img img-responsive" src="images/ava111.jpg" alt style="width:100% !important;">
+                                                        </div>
+                                                        <div class="user-info">
+                                                            <div class="user-name">
+                                                                <p> 
+
+
+شيرادي أمينة
+
+ 
+</p>
+                                                            </div>
+                                                            <div class="user-txt">
+                                                                <p> 
+إذا تم الدفع عند الاستلام وقمت باستخدامه بنجاح ، فسأطلب أنا أيضًا. لديّ سنوات عديدة من الاستجماتيزم ، سآخذ الدورة ، شكرًا لك
+
+                                                                </p>
+                                                            </div>
+                                                            <div class="user-time">
+                                                                <p>
+                                                                    <script type="text/javascript">
+                                                                        document.write(customDate(-4))
+                                                                    </script> | <span>تعليق</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                           
+                                           
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <center><a class="btnbtn" href="#to-order-form"> 
+اشترِ بخصم 50٪
+<div class="timer-in-button"><span class="h-timer">00</span>:<span class="m-timer">44</span>:<span class="s-timer">59</span></div></a></center>
+                                    </div>
+
+
+                                </section>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+
+    </div>
+
+
+<div class="foot_en_center" style="text-align: center; margin: 0px auto; padding: 30px 0; font-size:15px">
+
+
+    
+            <p class="conf-link doclinks">
+        <a class="nav-link" href="" onclick="window.open('policy_en.html'); return false;">سياسة الخصوصية</a>
+          |
+        <a class="nav-link" href="" onclick="window.open('terms_en.html'); return false;">الأحكام &amp; الشروط</a>
+      </p>
+      
+    
+</div>
+
+
+
+    <script>
+        //----------------------------ТАЙМЕР---------------------------------------------------
+        var time = 2700;
+        var storageVar = 'lastTimeForDiscount3';
+        var needToRememberTime = false;
+        var intr;
+
+
+
+        if (needToRememberTime && localStorage.getItem(storageVar)) {
+            time = localStorage.getItem(storageVar);
+        }
+
+        function start_timer() {
+            intr = setInterval(function() {
+                time = time - 1;
+                if (time >= 0) {
+                    localStorage.setItem(storageVar, time);
+                    var hours = Math.floor(time / (60 * 60));
+                    var mins = Math.floor((time - hours * 60 * 60) / 60);
+                    var secs = time - hours * 60 * 60 - mins * 60;
+                    if (hours == 0 && mins == 0 && secs == 0) {
+                        clearInterval(intr);
+                    }
+                    hours = hours >= 10 ? hours : "0" + hours;
+                    mins = mins >= 10 ? mins : "0" + mins;
+                    secs = secs >= 10 ? secs : "0" + secs;
+                    document.querySelectorAll(".h-timer").forEach(function(hTimer) {
+                        hTimer.innerHTML = hours;
+                    });
+                    document.querySelectorAll(".m-timer").forEach(function(mTimer) {
+                        mTimer.innerHTML = mins;
+                    });
+                    document.querySelectorAll(".s-timer").forEach(function(sTimer) {
+                        sTimer.innerHTML = secs;
+                    });
+                }
+            }, 1000);
+        }
+        start_timer();
+    </script>
+
+    <script>
+        //----------------------------СКРОЛЛ---------------------------------------------------
+        const buttons = document.querySelectorAll('a');
+        for (const button of buttons) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var elmnt = document.getElementById("to-order-form");
+                elmnt.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                return false;
+            })
+        }
+    </script>
+<style type="text/css">
+    .c-main .u-content-read{ margin: auto;
+
+    }
+    .best-form>.wrap{
+        display: flex;
+        max-width: 700px;
+        flex-wrap: wrap;
+    }
+
+   .best-form .product{
+        max-width: 430px;
+    }
+
+
+.form-wrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+   margin: auto;
+}
+</style>
+</body>
+
+</html>
